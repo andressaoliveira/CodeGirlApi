@@ -4,6 +4,6 @@ const router = express.Router();
 const InteressadosController = require('../controllers/interessados-constroller');
 
 router.get('/', InteressadosController.getInteressados);
-// router.post('/', login.required, InteressadosController.postCategory);
+router.post('/', InteressadosController.postInteressados);
 
 module.exports = router;
