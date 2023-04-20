@@ -4,13 +4,14 @@ module.exports = {
     async getInteressados(req, res, next) {
         try {
             const result = await mysql.execute("SELECT * FROM interessados;")
-            console.info(result);
             const response = {
                 length: result.length,
                 interessados: result.map(interessado => {
                     return {
                         nome: interessado.Nome,
-                        email: interessado.Email
+                        sobrenome: interessado.Sobrenome,
+                        email: interessado.Email,
+                        receberNovidades: interessado.ReceberNovidades
                     }
                 })
             }
@@ -22,10 +23,8 @@ module.exports = {
 
     async postInteressados(req, res) {
         try {
-            console.log('body', req.body)
-            const query = 'INSERT INTO interessados (`Nome`, `Sobrenome`, `Email`, `ReceberNotificacoes`) VALUES (?, ?, ?, ?)';
-            const result = await mysql.execute(query, [req.body.nome, req.body.sobrenome, req.body.email, req.body.receberNotificacao]);
-            console.log('result', result)
+            const query = 'INSERT INTO interessados (`Nome`, `Sobrenome`, `Email`, `ReceberNovidades`) VALUES (?, ?, ?, ?)';
+            const result = await mysql.execute(query, [req.body.nome, req.body.sobrenome, req.body.email, req.body.receberNovidades]);
 
             const response = {
                 message: 'Dado inserido com sucesso',
