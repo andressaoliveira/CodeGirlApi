@@ -1,12 +1,12 @@
 const express = require('express');
-const server = express();
+const app = express();
 
 const port = process.env.PORT || 3000;
 
-server.get('/', (req, res) => {
+app.get('/', function (req, res) {
     res.send('Api Ok')
 })
 
-server.listen(port, () => {
-    console.log('Funcionando...')
+app.listen(port, () => {
+    console.info('Funcionando...')
 })
