@@ -9,7 +9,8 @@ async function get() {
                 nome: interessado.Nome,
                 sobrenome: interessado.Sobrenome,
                 email: interessado.Email,
-                receberNovidades: interessado.ReceberNovidades
+                receberNovidades: interessado.ReceberNovidades,
+                data: interessado.Data
             }
         })
     }
@@ -33,8 +34,8 @@ module.exports = {
                 throw new Error('Usuário já cadastrado');
             }
 
-            const query = 'INSERT INTO interessados (`Nome`, `Sobrenome`, `Email`, `ReceberNovidades`) VALUES (?, ?, ?, ?)';
-            const result = await mysql.execute(query, [req.body.nome, req.body.sobrenome, req.body.email, req.body.receberNovidades]);
+            const query = 'INSERT INTO interessados (`Nome`, `Sobrenome`, `Email`, `ReceberNovidades`, `Data`) VALUES (?, ?, ?, ?, ?)';
+            const result = await mysql.execute(query, [req.body.nome, req.body.sobrenome, req.body.email, req.body.receberNovidades, new Date()]);
 
             const response = {
                 message: 'Dado inserido com sucesso',
