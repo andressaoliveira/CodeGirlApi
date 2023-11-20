@@ -1,3 +1,6 @@
+//npm install
+//node server
+//http://localhost:3000/interessados
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
