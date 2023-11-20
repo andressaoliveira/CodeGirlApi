@@ -1,20 +1,24 @@
 const mysql = require('../mysql');
 
+async function get() {
+    const result = await mysql.execute("SELECT * FROM interessados;")
+    const response = {
+        length: result.length,
+        interessados: result.map(interessado => {
+            return {
+                nome: interessado.Nome,
+                sobrenome: interessado.Sobrenome,
+                email: interessado.Email,
+                receberNovidades: interessado.ReceberNovidades
+            }
+        })
+    }
+    return response;
+}
 module.exports = {
     async getInteressados(req, res, next) {
         try {
-            const result = await mysql.execute("SELECT * FROM interessados;")
-            const response = {
-                length: result.length,
-                interessados: result.map(interessado => {
-                    return {
-                        nome: interessado.Nome,
-                        sobrenome: interessado.Sobrenome,
-                        email: interessado.Email,
-                        receberNovidades: interessado.ReceberNovidades
-                    }
-                })
-            }
+            const response = await get();
             return res.status(200).send(response);
         } catch (error) {
             return res.status(500).send({ error: error });
@@ -23,6 +27,12 @@ module.exports = {
 
     async postInteressados(req, res) {
         try {
+            const inseridos = await get();
+            let existe = inseridos?.interessados?.find(i => i.email == req.body.email)
+            if (existe) {
+                throw new Error('Usuário já cadastrado');
+            }
+
             const query = 'INSERT INTO interessados (`Nome`, `Sobrenome`, `Email`, `ReceberNovidades`) VALUES (?, ?, ?, ?)';
             const result = await mysql.execute(query, [req.body.nome, req.body.sobrenome, req.body.email, req.body.receberNovidades]);
 
@@ -32,7 +42,7 @@ module.exports = {
             }
             return res.status(201).send(response);
         } catch (error) {
-            return res.status(500).send({ error: error });
+            return res.status(500).send({ error });
         }
     }
 }
