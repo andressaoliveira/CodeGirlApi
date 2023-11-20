@@ -7,7 +7,7 @@ async function get() {
         interessados: result.map(interessado => {
             return {
                 nome: interessado.Nome,
-                sobrenome: interessado.Sobrenome,
+                telefone: interessado.Telefone,
                 email: interessado.Email,
                 receberNovidades: interessado.ReceberNovidades,
                 data: interessado.Data
@@ -34,8 +34,8 @@ module.exports = {
                 throw new Error('Usuário já cadastrado');
             }
 
-            const query = 'INSERT INTO interessados (`Nome`, `Sobrenome`, `Email`, `ReceberNovidades`, `Data`) VALUES (?, ?, ?, ?, ?)';
-            const result = await mysql.execute(query, [req.body.nome, req.body.sobrenome, req.body.email, req.body.receberNovidades, new Date()]);
+            const query = 'INSERT INTO interessados (`Nome`, `Telefone`, `Email`, `ReceberNovidades`, `Data`) VALUES (?, ?, ?, ?, ?)';
+            const result = await mysql.execute(query, [req.body.nome, req.body.telefone, req.body.email, req.body.receberNovidades, new Date()]);
 
             const response = {
                 message: 'Dado inserido com sucesso',
